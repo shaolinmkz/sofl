@@ -1,4 +1,5 @@
 # sofl
+[![Build Status](https://travis-ci.org/shaolinmkz/sofl.svg?branch=master)](https://travis-ci.org/shaolinmkz/sofl)
 
 [![Maintainability](https://api.codeclimate.com/v1/badges/3b57f1b2fe0dbaf87a1c/maintainability)](https://codeclimate.com/github/shaolinmkz/sofl/maintainability)
 
