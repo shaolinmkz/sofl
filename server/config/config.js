@@ -1,4 +1,5 @@
 const dotenv = require('dotenv');
+
 dotenv.config();
 
 module.exports = {
@@ -19,4 +20,4 @@ module.exports = {
   production: {
     use_env_variable: 'DATABASE_URL'
   }
-}
+};

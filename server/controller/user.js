@@ -1,13 +1,12 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
-dotenv.config();
-import {
-  User
-} from '../models';
+import { User } from '../models';
 import {
   Helpers
 } from '../Helpers';
+
+dotenv.config();
 
 /**
  * @description User controller methods
@@ -37,19 +36,26 @@ export default class UserController {
       email,
       password: hash
     };
-    const token = jwt.sign({
-      firstname,
-      lastname,
-      email
-    }, process.env.SECRET_KEY);
 
     User.create(requestBody)
-      .then(data => {
+      .then((userData) => {
+        const token = jwt.sign({
+          id: userData.id,
+          firstname,
+          lastname,
+          email
+        }, process.env.SECRET_KEY);
+
         res.status(201).json({
-          status: 'Success',
-          data,
+          status: 'success',
+          data: {
+            id: userData.id,
+            firstname,
+            lastname,
+            email
+          },
           token,
-          message: 'User created successfully'
+          message: 'user created successfully'
         });
       })
       .catch(error => res.status(400).json({
@@ -74,12 +80,10 @@ export default class UserController {
       where: {
         email
       }
-    }).then(userData => {
-
+    }).then((userData) => {
       if (!userData) {
         Helpers.errorReturns(req, res, 400, 'Error', "user doesn't exists");
       } else {
-
         const hash = userData.password;
         const isPassword = bcrypt.compareSync(password, hash);
         const userInfo = {
@@ -87,26 +91,23 @@ export default class UserController {
           firstname: userData.firstname,
           lastname: userData.lastname,
           email: userData.email
-        }
+        };
         if (isPassword) {
           const token = jwt.sign({
             userInfo
           }, process.env.SECRET_KEY);
 
           res.status(200).json({
-            status: 'Success',
+            status: 'success',
             token,
-            message: 'User login successful'
+            message: 'user login successful'
           });
         } else {
-          Helpers.errorReturns(req, res, 400, 'Error', "invalid email or password");
+          Helpers.errorReturns(req, res, 400, 'Error', 'invalid email or password');
         }
       }
-
     }).catch(error => res.status(400).json({
       error
     }));
   }
-
-
 }

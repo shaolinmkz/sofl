@@ -6,17 +6,17 @@ import { UserValidation } from '../middlewares';
 const userRoute = express.Router();
 
 userRoute.post(
-  '/v1/api/signup',
+  '/api/v1/auth/signup',
   UserValidation.stringValidation,
   UserValidation.passwordValidation,
   UserValidation.userExist,
   UserController.createUser
-  );
+);
 
 userRoute.post(
-  '/v1/api/login',
+  '/api/v1/auth/login',
   UserValidation.stringValidation,
   UserController.loginUser
-  );
+);
 
 export default userRoute;
