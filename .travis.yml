@@ -5,10 +5,14 @@ cache:
   directories:
     - node_modules
 script: npm test
+env:
+    global:
+      - CC_TEST_REPORTER_ID=a647a25f69faee215996afdab557d38989eb5444c787e39d5f4f294b99fab18e
 before_script:
   - npm install
   - npm install -g sequelize-cli
   - psql -c "create database test" -U postgres
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
 after_script:
   - psql -c "drop database test" -U postgres
 after_success: npm run coveralls
